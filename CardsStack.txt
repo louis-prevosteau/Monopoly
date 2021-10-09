@@ -1,0 +1,125 @@
+h
+Avancez à la case Départ (recevez 200 €)
+3
+0
+1
+h
+Avancez à la case Avenue Henri-Martin
+3
+0
+25
+h
+Avancez à la case Boulevard de la  Villette. Si vous passez par la case Départ, recevez 200 €
+3
+0
+12
+h
+La banque vous verse un dividende de 50 €
+1
+50
+0
+h
+Sortez de prison gratuitement, cette carte peut être conservée jusqu'à ce que vous en ayez besoin, ou échangée
+4
+0
+0
+h
+Amende pour excès de vitesse 15 €
+1
+-15
+0
+h
+Avancez à la case Rue de la Paix
+3
+0
+0
+h
+Vous avez été élu président du conseil d'administration, payez 50 € à chaque joueur
+2
+-50
+0
+h
+Vous avez gagné un concours de mots croisés - collectez 100 €
+1
+100
+0
+h
+Votre prêt immobilier arrive à échéance, encaissez 150 €
+1
+150
+0
+c
+Avancez à la case Départ (recevez 200 €)
+3
+0
+1
+c
+Erreur bancaire en votre faveur, collectez 75 €
+1
+75
+0
+c
+Frais de médecin, payer 50 €
+1
+-50
+0
+c
+Sortez de prison gratuitement, cette carte peut être conservée jusqu'à ce que vous en ayez besoin, ou échangée
+4
+0
+0
+c
+Allez directement en prison. Ne passez pas par la case Départ, ne collectez pas 200 €
+3
+0
+11
+c
+C'est votre anniversaire Collectez 10 € de chaque joueur
+2
+10
+0
+c
+Remboursement d'impôt sur le revenu, collectez 40 €
+1
+40
+0
+c
+L'assurance-vie arrive à échéance, collectez 100 €
+1
+100
+0
+c
+Payer des frais d'hospitalisation de 100 €
+1
+-100
+0
+c
+Payer des frais de scolarité de 50 €
+1
+-50
+0
+c
+Recevez 25 € de frais de conseil
+1
+25
+0
+c
+Vous avez remporté le deuxième prix d'un concours de beauté – collectez 10 €
+1
+10
+0
+c
+Vous héritez de 100 €
+1
+100
+0
+c
+De la vente de stock, vous obtenez 50 €
+1
+50
+0
+c
+Le Fonds de Vacances arrive à échéance - Recevez 100 €
+1
+100
+0
