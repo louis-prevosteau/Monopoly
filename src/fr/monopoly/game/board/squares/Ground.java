@@ -10,4 +10,30 @@ public class Ground extends Property {
         this.housePrice = housePrice;
         this.color = color;
     }
+
+    @Override
+    public int getNbHouse() {
+        return nbHouse;
+    }
+
+    public void setNbHouse(int nbHouse) {
+        this.nbHouse = nbHouse;
+    }
+
+    public int getHousePrice() {
+        return housePrice;
+    }
+
+    public void setHousePrice(int housePrice) {
+        this.housePrice = housePrice;
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

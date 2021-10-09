@@ -45,4 +45,10 @@ public abstract class Property extends Space {
     public void setOwner(Player owner) {
         this.owner = owner;
     }
+
+    public int getNbHouse() { return 0;}
+
+    public Color getColor() {
+        return null;
+    }
 }
