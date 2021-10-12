@@ -183,6 +183,7 @@ public class Player {
     public void sale(Property prop) {
         this.setMoney(this.getMoney() + prop.getPrice());
         prop.setOwner(null);
+        prop.setMortgage(false);
         this.getPropertiesOwned().remove(prop);
     }
 
