@@ -31,8 +31,54 @@ public class Monopoly {
     public Monopoly() {
     }
 
-    public static void start() {
-        // TODO: 10/10/2021
+    public void start() {
+        String numberOfPlayersStr = JOptionPane.showInputDialog(null, "Nombre de joueurs (2, 3, 4): ");
+        if (numberOfPlayersStr.charAt(0) == '2' || numberOfPlayersStr.charAt(0) == '3' || numberOfPlayersStr.charAt(0) == '4')
+            numberOfPlayers = Integer.parseInt(numberOfPlayersStr);
+        else
+            start();
+        players = new ArrayList<Player>();
+        board = new Board();
+        cardStack = new CardStack();
+        for (int i = 0 ; i < numberOfPlayers ; i++)
+            players.add(new Player("Joueur " + (i+1), board.getFirst()));
+        currentPlayerIndex = 0;
+        currentPlayer = new Player();
+        currentPlayer = players.get(currentPlayerIndex);
+        center = new BoardUI(players);
+        createUI(players);
+        JOptionPane.showMessageDialog(null, "Bienvenue", "Monopoly", JOptionPane.INFORMATION_MESSAGE);
+        while (win == false) {
+            isTurnPhase1();
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            isTurnPhase2();
+            for (Player p : players) {
+                if (p.getMoney() < 1) {
+                    String loser = p.getName();
+                    JOptionPane.showMessageDialog(null, "Faillite pour " + loser);
+                    isDying();
+                    if (p.getMoney() < 1) {
+                        for (Property prop : p.getPropertiesOwned()) {
+                            prop.setOwner(null);
+                            p.getPropertiesOwned().remove(prop);
+                        }
+                        players.remove(p);
+                        JOptionPane.showMessageDialog(null, p.getName() + ", vous avez perdu.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                if (players.size() == 1) {
+                    String winner = players.get(0).getName();
+                    JOptionPane.showMessageDialog(null, winner + " a gagné la partie", "Vainqueur", JOptionPane.INFORMATION_MESSAGE);
+                    win = true;
+                }
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+                currentPlayer = players.get(currentPlayerIndex);
+            }
+        }
     }
 
     public void createUI(ArrayList<Player> players) {
@@ -102,7 +148,11 @@ public class Monopoly {
         String[] props = new String[currentPlayer.getPropertiesOwned().size()];
         for (int i = 0 ; i < props.length ; i++)
             props[i] = currentPlayer.getPropertiesOwned().get(i).getName();
-        ArrayList<Ground> groundsOwned = (ArrayList<Ground>) currentPlayer.getPropertiesOwned().stream().filter(property -> property instanceof Ground);
+        ArrayList<Ground> groundsOwned = new ArrayList<Ground>();
+        for (Property p : currentPlayer.getPropertiesOwned()) {
+            if (p instanceof Ground)
+                groundsOwned.add((Ground) p);
+        }
         String[] grounds = new String[groundsOwned.size()];
         for (int i = 0 ; i < grounds.length ; i++)
             grounds[i] = groundsOwned.get(i).getName();
@@ -249,7 +299,11 @@ public class Monopoly {
         String[] props = new String[currentPlayer.getPropertiesOwned().size()];
         for (int i = 0 ; i < props.length ; i++)
             props[i] = currentPlayer.getPropertiesOwned().get(i).getName();
-        ArrayList<Ground> groundsOwned = (ArrayList<Ground>) currentPlayer.getPropertiesOwned().stream().filter(property -> property instanceof Ground);
+        ArrayList<Ground> groundsOwned = new ArrayList<Ground>();
+        for (Property p : currentPlayer.getPropertiesOwned()) {
+            if (p instanceof Ground)
+                groundsOwned.add((Ground) p);
+        }
         String[] grounds = new String[groundsOwned.size()];
         for (int i = 0 ; i < grounds.length ; i++)
             grounds[i] = groundsOwned.get(i).getName();
@@ -424,9 +478,11 @@ public class Monopoly {
         Space landed = board.getFirst();
         while (landed.getPosition() != reference)
             landed = landed.getNext();
+        landed.doAction(currentPlayer, players, this, cardStack);
     }
 
     public static void main(String[] args) {
-         Monopoly.start();
+         Monopoly game = new Monopoly();
+         game.start();
     }
 }

@@ -118,8 +118,16 @@ public class Player {
     }
 
     public boolean isNoHousesOnGrounds(Color groundColor) {
-        ArrayList<Ground> groundsOfColor = (ArrayList<Ground>) this.getPropertiesOwned().stream().filter(property -> property instanceof Ground && property.getColor().equals(groundColor));
-        return groundsOfColor.stream().allMatch(ground -> ground.getNbHouse() == 0);
+        ArrayList<Ground> groundsOfColor = new ArrayList<Ground>();
+        for (Property p : propertiesOwned) {
+            if (p instanceof Ground && p.getColor().equals(groundColor))
+                groundsOfColor.add((Ground) p);
+        }
+        for (Ground g : groundsOfColor) {
+            if (g.getNbHouse() != 0)
+                return false;
+        }
+        return true;
     }
 
     public void move() {
@@ -170,7 +178,11 @@ public class Player {
     }
 
     public boolean hasMonopoly(Color propColor) {
-        ArrayList<Ground> groundsOfColor = (ArrayList<Ground>) this.getPropertiesOwned().stream().filter(property -> property instanceof Ground && property.getColor().equals(propColor));
+        ArrayList<Ground> groundsOfColor = new ArrayList<Ground>();
+        for (Property p : propertiesOwned) {
+            if (p instanceof Ground && p.getColor().equals(propColor))
+                groundsOfColor.add((Ground) p);
+        }
         return (groundsOfColor.size() == 2 && (propColor.equals(Color.PINK)  || propColor.equals(Color.BLUE))) || groundsOfColor.size() == 3;
     }
 
@@ -245,7 +257,11 @@ public class Player {
                         break;
                 }
             } else if (landed instanceof RailStation) {
-                ArrayList<RailStation> railStationsOwned = (ArrayList<RailStation>) owner.getPropertiesOwned().stream().filter(property -> property instanceof RailStation);
+                ArrayList<RailStation> railStationsOwned = new ArrayList<RailStation>();
+                for (Property p : propertiesOwned) {
+                    if (p instanceof RailStation)
+                        railStationsOwned.add((RailStation) p);
+                }
                 switch (railStationsOwned.size()) {
                     case 1:
                         newRent = landed.getRent();
@@ -263,7 +279,11 @@ public class Player {
                         break;
                 }
             } else if (landed instanceof Company) {
-                ArrayList<Company> companiesOwned = (ArrayList<Company>) owner.getPropertiesOwned().stream().filter(property -> property instanceof Company);
+                ArrayList<Company> companiesOwned = new ArrayList<Company>();
+                for (Property p : propertiesOwned) {
+                    if (p instanceof Company)
+                        companiesOwned.add((Company) p);
+                }
                 switch (companiesOwned.size()) {
                     case 1:
                         newRent = landed.getRent() * this.roll;

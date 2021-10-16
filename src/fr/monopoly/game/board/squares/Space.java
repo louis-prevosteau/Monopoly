@@ -1,5 +1,11 @@
 package fr.monopoly.game.board.squares;
 
+import fr.monopoly.Monopoly;
+import fr.monopoly.game.Player;
+import fr.monopoly.game.board.cardstack.CardStack;
+
+import java.util.ArrayList;
+
 public class Space {
 
     private int position;
@@ -36,5 +42,9 @@ public class Space {
 
     public void setNext(Space next) {
         this.next = next;
+    }
+
+    public void doAction(Player player, ArrayList<Player> players, Monopoly game, CardStack stack) {
+        return;
     }
 }

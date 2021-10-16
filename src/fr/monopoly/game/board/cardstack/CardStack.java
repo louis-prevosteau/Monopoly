@@ -31,7 +31,7 @@ public class CardStack {
                         action = Integer.parseInt(cardScanner.nextLine());
                         value = Integer.parseInt(cardScanner.nextLine());
                         position = Integer.parseInt(cardScanner.nextLine());
-                        card = new Card(action, value, position, message, Type.COMUNITY);
+                        card = new Card(action, value, position, message, Type.COMMUNITY);
                         community.add(card);
                         break;
                 }
@@ -46,7 +46,7 @@ public class CardStack {
         if (type.equals(Type.CHANCE)) {
             card = chance.removeFirst();
             chance.addLast(card);
-        } else if (type.equals(Type.COMUNITY)) {
+        } else if (type.equals(Type.COMMUNITY)) {
             card = community.removeFirst();
             community.addLast(card);
         }
