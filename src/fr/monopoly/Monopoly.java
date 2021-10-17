@@ -32,52 +32,44 @@ public class Monopoly {
     }
 
     public void start() {
-        String numberOfPlayersStr = JOptionPane.showInputDialog(null, "Nombre de joueurs (2, 3, 4): ");
-        if (numberOfPlayersStr.charAt(0) == '2' || numberOfPlayersStr.charAt(0) == '3' || numberOfPlayersStr.charAt(0) == '4')
-            numberOfPlayers = Integer.parseInt(numberOfPlayersStr);
+        String snPlayers = JOptionPane.showInputDialog("Nombre de joueurs (2, 3, 4):");
+        if(snPlayers.charAt(0) == '2' || snPlayers.charAt(0) == '3' || snPlayers.charAt(0) == '4')
+            numberOfPlayers = Integer.parseInt(snPlayers);
         else
             start();
         players = new ArrayList<Player>();
         board = new Board();
         cardStack = new CardStack();
-        for (int i = 0 ; i < numberOfPlayers ; i++)
-            players.add(new Player("Joueur " + (i+1), board.getFirst()));
+        for(int i = 0 ; i<numberOfPlayers ; i++)
+            players.add(i, new Player("Joueur"+(i+1), board.getFirst()));
         currentPlayerIndex = 0;
         currentPlayer = new Player();
         currentPlayer = players.get(currentPlayerIndex);
         center = new BoardUI(players);
         createUI(players);
-        JOptionPane.showMessageDialog(null, "Bienvenue", "Monopoly", JOptionPane.INFORMATION_MESSAGE);
-        while (win == false) {
+        JOptionPane.showMessageDialog(null, "Bienvenue!", "Monopoly", JOptionPane.INFORMATION_MESSAGE);
+        while(win == false){
             isTurnPhase1();
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
             isTurnPhase2();
-            for (Player p : players) {
-                if (p.getMoney() < 1) {
-                    String loser = p.getName();
-                    JOptionPane.showMessageDialog(null, "Faillite pour " + loser);
+            for(int k = 0; k<players.size(); k++){
+                if(players.get(k).getMoney() < 1){
+                    String loserName = players.get(k).getName();
+                    JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous êtes en faillite.", loserName + " - Banqueroute", JOptionPane.INFORMATION_MESSAGE);
                     isDying();
-                    if (p.getMoney() < 1) {
-                        for (Property prop : p.getPropertiesOwned()) {
-                            prop.setOwner(null);
-                            p.getPropertiesOwned().remove(prop);
-                        }
-                        players.remove(p);
-                        JOptionPane.showMessageDialog(null, p.getName() + ", vous avez perdu.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                    if(players.get(k).getMoney() < 1){
+                        players.remove(k);
+                        JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous avez perdu.", loserName + " - Banqueroute!", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-                if (players.size() == 1) {
+                if(players.size() == 1){
                     String winner = players.get(0).getName();
-                    JOptionPane.showMessageDialog(null, winner + " a gagné la partie", "Vainqueur", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, winner + " a gagné la partie!", "FIN", JOptionPane.INFORMATION_MESSAGE);
                     win = true;
                 }
-                currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-                currentPlayer = players.get(currentPlayerIndex);
             }
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            currentPlayer = players.get(currentPlayerIndex);
         }
     }
 

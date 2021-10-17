@@ -19,7 +19,7 @@ public class SideUI extends JPanel {
     public void refreshList(Player player){
         this.removeAll();
         if(player.getPropertiesOwned().size() < 1 && holder.isEmpty()){
-            String detail = "No property";
+            String detail = "Pas de propriétés";
             holder.add(0, detail);
         }else{
             holder = new ArrayList<String>();

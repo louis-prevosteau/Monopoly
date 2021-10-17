@@ -2,6 +2,7 @@ package fr.monopoly.game.board.cardstack;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -39,6 +40,8 @@ public class CardStack {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        Collections.shuffle(chance);
+        Collections.shuffle(community);
     }
 
     public Card getCard(Type type) {
