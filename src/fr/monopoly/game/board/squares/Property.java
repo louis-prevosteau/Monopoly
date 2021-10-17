@@ -59,7 +59,7 @@ public abstract class Property extends Space {
 
     @Override
     public void doAction(Player player, ArrayList<Player> players, Monopoly game, CardStack stack) {
-        if (this.getOwner().equals(null)) {
+        if (this.getOwner() == null) {
             String[] yesNoOptions = {"Oui", "Non"};
             String details = "Nom: " + this.getName() +
                     "\nCouleur: " + this.getColor() +
