@@ -13,6 +13,7 @@ public class BoardUI extends JPanel {
     public BoardUI(ArrayList<Player> players){
         this.players = players;
     }
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Image board = new ImageIcon("Board.jpg").getImage();

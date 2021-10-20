@@ -32,10 +32,6 @@ public class Space {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Space getNext() {
         return next;
     }

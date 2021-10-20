@@ -20,11 +20,7 @@ public class Card {
     }
 
     public int execute(Player player, ArrayList<Player> players) {
-        String title;
-        if (this.type.equals(Type.CHANCE))
-            title = "Chance";
-        else
-            title = "Caisse de Communauté";
+        String title = type.equals(Type.CHANCE) ? "Chance" : "Caisse de Communauté";
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
         switch (action) {
             case 1:
