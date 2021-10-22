@@ -24,16 +24,8 @@ public class Ground extends Property {
         return housePrice;
     }
 
-    public void setHousePrice(int housePrice) {
-        this.housePrice = housePrice;
-    }
-
     @Override
     public Color getColor() {
         return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 }

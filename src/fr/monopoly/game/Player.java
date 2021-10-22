@@ -89,20 +89,8 @@ public class Player {
         this.jailExit = jailExit;
     }
 
-    public boolean isOnDice2() {
-        return onDice2;
-    }
-
-    public void setOnDice2(boolean onDice2) {
-        this.onDice2 = onDice2;
-    }
-
     public ArrayList<Property> getPropertiesOwned() {
         return propertiesOwned;
-    }
-
-    public void setPropertiesOwned(ArrayList<Property> propertiesOwned) {
-        this.propertiesOwned = propertiesOwned;
     }
 
     public Space getCurrentSpace() {

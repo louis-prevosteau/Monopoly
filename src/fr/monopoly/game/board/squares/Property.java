@@ -23,16 +23,8 @@ public abstract class Property extends Space {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public int getRent() {
         return rent;
-    }
-
-    public void setRent(int rent) {
-        this.rent = rent;
     }
 
     public boolean isMortgage() {

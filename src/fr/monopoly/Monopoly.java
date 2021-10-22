@@ -41,7 +41,7 @@ public class Monopoly {
         board = new Board();
         cardStack = new CardStack();
         for(int i = 0 ; i<numberOfPlayers ; i++)
-            players.add(i, new Player("Joueur"+(i+1), board.getFirst()));
+            players.add(i, new Player("Joueur "+(i+1), board.getFirst()));
         currentPlayerIndex = 0;
         currentPlayer = new Player();
         currentPlayer = players.get(currentPlayerIndex);
@@ -246,6 +246,7 @@ public class Monopoly {
                 } else {
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas fait un double. Restez en prison.", "Détention", JOptionPane.INFORMATION_MESSAGE);
                     currentPlayer.setJailTime(currentPlayer.getJailTime() - 1);
+                    return;
                 }
             } else if (exitChoice == 1) {
                 if (currentPlayer.getJailExit() > 0) {
@@ -258,14 +259,17 @@ public class Monopoly {
                     } else {
                         JOptionPane.showMessageDialog(null, "Restez en prison.", "Détention", JOptionPane.INFORMATION_MESSAGE);
                         currentPlayer.setJailTime(currentPlayer.getJailTime() - 1);
+                        return;
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas de carte de permission de sortie. Restez en prison.", "Détention", JOptionPane.INFORMATION_MESSAGE);
                     currentPlayer.setJailTime(currentPlayer.getJailTime() - 1);
+                    return;
                 }
             } else if (exitChoice == 2) {
                 JOptionPane.showMessageDialog(null, "Restez en prison.", "Détention", JOptionPane.INFORMATION_MESSAGE);
                 currentPlayer.setJailTime(currentPlayer.getJailTime() - 1);
+                return;
             }
         }
     }

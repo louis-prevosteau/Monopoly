@@ -13,10 +13,11 @@ public class BoardUI extends JPanel {
     public BoardUI(ArrayList<Player> players){
         this.players = players;
     }
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        Image board = new ImageIcon("Board.jpg").getImage();
-        g.drawImage(board,0,0,this.getWidth(), this. getHeight(),0,0,965,868, this);
+        Image board = new ImageIcon("Monopoly.png").getImage();
+        g.drawImage(board,0,0, (int) (this.getWidth() * 2.5), (int) (this.getHeight() * 2.5),0,0,965,868, this);
         for(int i = 0; i<players.size(); i++){
             if(i == 0){
                 g.setColor(Color.magenta);

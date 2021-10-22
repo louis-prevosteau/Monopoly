@@ -16,14 +16,6 @@ public class Tax extends Space {
         this.tax = tax;
     }
 
-    public int getTax() {
-        return tax;
-    }
-
-    public void setTax(int tax) {
-        this.tax = tax;
-    }
-
     @Override
     public void doAction(Player player, ArrayList<Player> players, Monopoly game, CardStack stack) {
         JOptionPane.showMessageDialog(null, player.getName() + ", vous êtes sur la case " + this.getName() + ". Payez " + tax + " €.", this.getName(), JOptionPane.INFORMATION_MESSAGE);

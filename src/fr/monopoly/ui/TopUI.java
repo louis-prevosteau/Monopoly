@@ -52,17 +52,4 @@ public class TopUI extends JPanel {
         this.validate();
         this.repaint();
     }
-
-    public void valueChanged(ListSelectionEvent e) {
-        for(Property p : player.getPropertiesOwned()){
-            if(p.getName() == list.getSelectedValue()){
-                String details = "Nom: " + p.getName() +
-                        "\nCouleur: " + p.getColor() +
-                        "\nLoyer: " + p.getRent() + " €" +
-                        "\nNombre de maisons: " + p.getNbHouse() +
-                        "\nHypothéquée: " + p.isMortgage();
-                JOptionPane.showMessageDialog(null, details, p.getName(), JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }
 }
