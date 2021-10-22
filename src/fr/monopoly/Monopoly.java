@@ -41,7 +41,7 @@ public class Monopoly {
         board = new Board();
         cardStack = new CardStack();
         for(int i = 0 ; i<numberOfPlayers ; i++)
-            players.add(i, new Player("Joueur"+(i+1), board.getFirst()));
+            players.add(i, new Player("Joueur "+(i+1), board.getFirst()));
         currentPlayerIndex = 0;
         currentPlayer = new Player();
         currentPlayer = players.get(currentPlayerIndex);
