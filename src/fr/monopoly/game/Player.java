@@ -219,71 +219,9 @@ public class Player {
 
     public int payRent(Player owner, Property landed) {
         int newRent = 0;
-        if (landed.isMortgage() == false) {
-            if (landed instanceof Ground) {
-                switch (landed.getNbHouse()) {
-                    case 0:
-                        if (owner.hasMonopoly(landed.getColor()))
-                            newRent = 2 * landed.getRent();
-                        else
-                            newRent = landed.getRent();
-                        break;
-                    case 1:
-                        newRent = 5 * landed.getRent();
-                        break;
-                    case 2:
-                        newRent = 15 * landed.getRent();
-                        break;
-                    case 3:
-                        newRent = 45 * landed.getRent();
-                        break;
-                    case 4:
-                        newRent = 90 * landed.getRent();
-                        break;
-                    case 5:
-                        newRent = 180 * landed.getRent();
-                        break;
-                }
-            } else if (landed instanceof RailStation) {
-                ArrayList<RailStation> railStationsOwned = new ArrayList<RailStation>();
-                for (Property p : propertiesOwned) {
-                    if (p instanceof RailStation)
-                        railStationsOwned.add((RailStation) p);
-                }
-                switch (railStationsOwned.size()) {
-                    case 1:
-                        newRent = landed.getRent();
-                        break;
-                    case 2:
-                        newRent = 2 * landed.getRent();
-                        break;
-                    case 3:
-                        newRent = 3 * landed.getRent();
-                        break;
-                    case 4:
-                        newRent = 4 * landed.getRent();
-                        break;
-                    default:
-                        break;
-                }
-            } else if (landed instanceof Company) {
-                ArrayList<Company> companiesOwned = new ArrayList<Company>();
-                for (Property p : propertiesOwned) {
-                    if (p instanceof Company)
-                        companiesOwned.add((Company) p);
-                }
-                switch (companiesOwned.size()) {
-                    case 1:
-                        newRent = landed.getRent() * this.roll;
-                        break;
-                    case 2:
-                        newRent = 10 * this.roll;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        } else
+        if (landed.isMortgage() == false)
+            newRent = landed.updateRent(owner, this);
+        else
             JOptionPane.showMessageDialog(null, landed.getName() + " est hypothéquée.", "Propriété hypothéquée", JOptionPane.ERROR_MESSAGE);
         if (!landed.getOwner().equals(this)) {
             this.money -= newRent;

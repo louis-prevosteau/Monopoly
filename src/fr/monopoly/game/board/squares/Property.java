@@ -74,4 +74,6 @@ public abstract class Property extends Space {
         }
         game.refreshAll();
     }
+
+    public abstract int updateRent(Player owner, Player currentPlayer);
 }
