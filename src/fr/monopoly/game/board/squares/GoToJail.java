@@ -16,8 +16,8 @@ public class GoToJail extends Space {
     @Override
     public void doAction(Player player, ArrayList<Player> players, Monopoly game, CardStack stack) {
         JOptionPane.showMessageDialog(null, player.getName() + ", Allez en prison. Ne passez pas par la case Départ.", this.getName(), JOptionPane.INFORMATION_MESSAGE);
-        player.moveTo(11);
         player.setJailTime(3);
+        player.moveTo(11);
         game.refreshAll();
     }
 }

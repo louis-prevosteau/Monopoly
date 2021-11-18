@@ -10,6 +10,7 @@ public class CardStack {
 
     private LinkedList<Card> chance = new LinkedList<Card>();
     private LinkedList<Card> community = new LinkedList<Card>();
+    private final int CARDS = 24;
 
     public CardStack() {
         try {
@@ -17,7 +18,7 @@ public class CardStack {
             int action, value, position;
             String message;
             Card card;
-            for (int i =  0 ; i < 24 ; i++) {
+            for (int i =  0 ; i < CARDS ; i++) {
                 switch (cardScanner.nextLine().charAt(0)) {
                     case 'h':
                         message = cardScanner.nextLine();
