@@ -44,7 +44,7 @@ public class SideUI extends JPanel {
         list.setSelectedIndex (1);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.setLayout(new FlowLayout());
-        this.setPreferredSize(new Dimension(185, 800));
+        this.setPreferredSize(new Dimension(200, 800));
         this.add(BorderLayout.NORTH, list);
         this.validate();
         this.repaint();

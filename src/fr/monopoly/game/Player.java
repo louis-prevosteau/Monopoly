@@ -1,5 +1,6 @@
 package fr.monopoly.game;
 
+import fr.monopoly.Monopoly;
 import fr.monopoly.game.board.squares.*;
 
 import javax.swing.*;
@@ -187,8 +188,20 @@ public class Player {
         this.getPropertiesOwned().remove(prop);
     }
 
-    public void buyHouse(Ground prop) {
+    public void buyHouse(Ground prop, Monopoly game) {
+        if (prop.getNbHouse() < 4 && game.getHouses() == 0) {
+            JOptionPane.showMessageDialog(null, "Il n\'y a plus de maisons dans le jeu", "Plus de maisons disponibles", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (prop.getNbHouse() == 4 && game.getHotels() == 0) {
+            JOptionPane.showMessageDialog(null, "Il n\'y a plus d\'hôtels dans le jeu", "Plus d\'hôtels disponibles", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (prop.getNbHouse() < 5) {
+            if (prop.getNbHouse() == 4 && game.getHotels() > 0)
+                game.setHotels(game.getHotels() - 1);
+            else if (prop.getNbHouse() < 4 && game.getHouses() > 0)
+                game.setHouses(game.getHouses() - 1);
             this.setMoney(this.getMoney() - prop.getHousePrice());
             prop.setNbHouse(prop.getNbHouse() + 1);
             JOptionPane.showMessageDialog(null, "Vous avez construit une maison sur " + prop.getName(), "Construction", JOptionPane.INFORMATION_MESSAGE);
@@ -197,8 +210,12 @@ public class Player {
         }
     }
 
-    public void saleHouse(Ground prop) {
+    public void saleHouse(Ground prop, Monopoly game) {
         if (prop.getNbHouse() > 0) {
+            if (prop.getNbHouse() == 5)
+                game.setHotels(game.getHotels() + 1);
+            else
+                game.setHouses(game.getHouses() + 1);
             this.setMoney(this.getMoney() + prop.getHousePrice());
             prop.setNbHouse(prop.getNbHouse() - 1);
             JOptionPane.showMessageDialog(null, "Vous avez retirez une maison sur " + prop.getName(), "Déstruction", JOptionPane.INFORMATION_MESSAGE);

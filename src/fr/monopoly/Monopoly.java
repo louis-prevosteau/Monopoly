@@ -24,11 +24,30 @@ public class Monopoly {
     private Player currentPlayer;
     private Board board;
     private CardStack cardStack;
-    private int currentPlayerIndex, numberOfPlayers;
+    private int currentPlayerIndex;
+    private int numberOfPlayers;
+    private int houses = 32;
+    private int hotels = 12;
     private boolean win = false;
 
 
     public Monopoly() {
+    }
+
+    public int getHouses() {
+        return houses;
+    }
+
+    public void setHouses(int houses) {
+        this.houses = houses;
+    }
+
+    public int getHotels() {
+        return hotels;
+    }
+
+    public void setHotels(int hotels) {
+        this.hotels = hotels;
     }
 
     public void start() {
@@ -170,7 +189,7 @@ public class Monopoly {
             }
         } else if (optionSelected == 2) {
             Ground choice = groundsOwned.get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", sur quelle propriété voulez-vous vendre une maison ?", "Vendre une maison", 0, JOptionPane.QUESTION_MESSAGE, null, grounds, null));
-            currentPlayer.saleHouse(choice);
+            currentPlayer.saleHouse(choice, this);
             JOptionPane.showMessageDialog(null, "Maison vendu sur " + choice.getName(), "Maison vendu", JOptionPane.INFORMATION_MESSAGE);
             refreshAll();
             isDying();
@@ -324,9 +343,10 @@ public class Monopoly {
                 for (int i = 0 ; i < playerProps.length ; i++)
                     playerProps[i] = player.getPropertiesOwned().get(i).getName();
                 Property viewed = player.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, "Quelle propriété voulez-vous voir ?", "Voir une propriété de " + player.getName(), 0, JOptionPane.QUESTION_MESSAGE, null, playerProps, null));
+                int currentRent = viewed.updateRent(viewed.getOwner(), currentPlayer);
                 String[] okOption = {"Ok"};
                 String details = "Nom: " + viewed.getName() +
-                        "\nLoyer: " + viewed.getRent() + " €" +
+                        "\nLoyer: " + currentRent + " €" +
                         "\nNombre de maisons: " + viewed.getNbHouse() +
                         "\nHypothéquée: " + viewed.isMortgage();
                 JOptionPane.showOptionDialog(null, details, viewed.getName(), 0, JOptionPane.QUESTION_MESSAGE, null, okOption, null);
@@ -339,7 +359,7 @@ public class Monopoly {
             } else {
                 Ground choice = groundsOwned.get(JOptionPane.showOptionDialog(null, "Sur quelle terrains voulez-vous construire une maison ?", "Construire une maison", 0, JOptionPane.QUESTION_MESSAGE, null, grounds, null));
                 if (currentPlayer.hasMonopoly(choice.getColor())) {
-                    currentPlayer.buyHouse(choice);
+                    currentPlayer.buyHouse(choice, this);
                     JOptionPane.showMessageDialog(null, currentPlayer.getName() + " a construit une maison sur " + choice.getName(), "Construction", JOptionPane.INFORMATION_MESSAGE);
                 } else
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas le monopole.", "Ooops", JOptionPane.INFORMATION_MESSAGE);
@@ -408,7 +428,7 @@ public class Monopoly {
                 isTurnPhase1();
             } else {
                 Ground choice = groundsOwned.get(JOptionPane.showOptionDialog(null, "Sur quelle terrains voulez-vous détruire une maison ?", "Détruire une maison", 0, JOptionPane.QUESTION_MESSAGE, null, grounds, null));
-                currentPlayer.saleHouse(choice);
+                currentPlayer.saleHouse(choice, this);
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + " a détruit une maison sur " + choice.getName(), "Déstruction", JOptionPane.INFORMATION_MESSAGE);
                 refreshAll();
                 isTurnPhase1();
