@@ -281,6 +281,8 @@ public class Monopoly {
             e.printStackTrace();
         }
         isInJail();
+        if (currentPlayer.getJailTime() != 0)
+            return;
         String[] phase1Options = {
                 "Lancer les dés",
                 "Voir les propriétés d'un joueur",
