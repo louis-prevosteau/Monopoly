@@ -174,7 +174,6 @@ public class Monopoly {
         if (optionSelected == 1) {
             if (currentPlayer.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
-                isDying();
             } else {
                 Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous vendre ?", "Vendre", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
                 if (choice instanceof Ground && currentPlayer.hasMonopoly(choice.getColor()) && !currentPlayer.isNoHousesOnGrounds(choice.getColor())) {
@@ -185,8 +184,8 @@ public class Monopoly {
                     JOptionPane.showMessageDialog(null, "Vous avez vendu " + choice.getName(), "Vendu", JOptionPane.INFORMATION_MESSAGE);
                 }
                 refreshAll();
-                isDying();
             }
+            isDying();
         } else if (optionSelected == 2) {
             Ground choice = groundsOwned.get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", sur quelle propriété voulez-vous vendre une maison ?", "Vendre une maison", 0, JOptionPane.QUESTION_MESSAGE, null, grounds, null));
             currentPlayer.saleHouse(choice, this);
@@ -355,7 +354,6 @@ public class Monopoly {
         } else if (phase1 == 2) {
             if (currentPlayer.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
-                isTurnPhase1();
             } else {
                 Ground choice = groundsOwned.get(JOptionPane.showOptionDialog(null, "Sur quelle terrains voulez-vous construire une maison ?", "Construire une maison", 0, JOptionPane.QUESTION_MESSAGE, null, grounds, null));
                 if (currentPlayer.hasMonopoly(choice.getColor())) {
@@ -364,8 +362,8 @@ public class Monopoly {
                 } else
                     JOptionPane.showMessageDialog(null, "Vous n'avez pas le monopole.", "Ooops", JOptionPane.INFORMATION_MESSAGE);
                 refreshAll();
-                isTurnPhase1();
             }
+            isTurnPhase1();
         } else if (phase1 == 3) {
             if (currentPlayer.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
@@ -425,14 +423,13 @@ public class Monopoly {
         } else if (phase1 == 5) {
             if (currentPlayer.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
-                isTurnPhase1();
             } else {
                 Ground choice = groundsOwned.get(JOptionPane.showOptionDialog(null, "Sur quelle terrains voulez-vous détruire une maison ?", "Détruire une maison", 0, JOptionPane.QUESTION_MESSAGE, null, grounds, null));
                 currentPlayer.saleHouse(choice, this);
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + " a détruit une maison sur " + choice.getName(), "Déstruction", JOptionPane.INFORMATION_MESSAGE);
                 refreshAll();
-                isTurnPhase1();
             }
+            isTurnPhase1();
         } else if (phase1 == 6) {
             if (currentPlayer.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);

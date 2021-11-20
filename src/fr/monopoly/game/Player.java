@@ -169,7 +169,7 @@ public class Player {
     public boolean hasMonopoly(Color propColor) {
         ArrayList<Ground> groundsOfColor = new ArrayList<Ground>();
         for (Property p : propertiesOwned) {
-            if (p instanceof Ground && p.getColor().equals(propColor))
+            if (p instanceof Ground && p.getColor().equals(propColor) && !p.isMortgage())
                 groundsOfColor.add((Ground) p);
         }
         return (groundsOfColor.size() == 2 && (propColor.equals(Color.PINK)  || propColor.equals(Color.BLUE))) || groundsOfColor.size() == 3;

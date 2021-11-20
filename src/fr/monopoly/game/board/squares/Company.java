@@ -14,7 +14,7 @@ public class Company extends Property {
     public int updateRent(Player owner, Player currentPlayer) {
         ArrayList<Company> companiesOwned = new ArrayList<Company>();
         for (Property p : owner.getPropertiesOwned()) {
-            if (p instanceof Company)
+            if (p instanceof Company && !p.isMortgage())
                 companiesOwned.add((Company) p);
         }
         switch (companiesOwned.size()) {
