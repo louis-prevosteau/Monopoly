@@ -10,7 +10,6 @@ public class CardStack {
 
     private LinkedList<Card> chance = new LinkedList<Card>();
     private LinkedList<Card> community = new LinkedList<Card>();
-    private final int CARDS = 24;
 
     public CardStack() {
         try {
@@ -18,24 +17,25 @@ public class CardStack {
             int action, value, position;
             String message;
             Card card;
-            for (int i =  0 ; i < CARDS ; i++) {
+            int CARDS = 24;
+            for (int i = 0; i < CARDS; i++) {
                 switch (cardScanner.nextLine().charAt(0)) {
-                    case 'h':
+                    case 'h' -> {
                         message = cardScanner.nextLine();
                         action = Integer.parseInt(cardScanner.nextLine());
                         value = Integer.parseInt(cardScanner.nextLine());
                         position = Integer.parseInt(cardScanner.nextLine());
                         card = new Card(action, value, position, message, Type.CHANCE);
                         chance.add(card);
-                        break;
-                    case 'c':
+                    }
+                    case 'c' -> {
                         message = cardScanner.nextLine();
                         action = Integer.parseInt(cardScanner.nextLine());
                         value = Integer.parseInt(cardScanner.nextLine());
                         position = Integer.parseInt(cardScanner.nextLine());
                         card = new Card(action, value, position, message, Type.COMMUNITY);
                         community.add(card);
-                        break;
+                    }
                 }
             }
         } catch (FileNotFoundException e) {

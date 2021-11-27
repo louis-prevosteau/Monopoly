@@ -23,20 +23,14 @@ public class Card {
         String title = type.equals(Type.CHANCE) ? "Chance" : "Caisse de Communauté";
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
         switch (action) {
-            case 1:
-                player.setMoney(player.getMoney() + value);
-                break;
-            case 2:
+            case 1 -> player.setMoney(player.getMoney() + value);
+            case 2 -> {
                 player.setMoney(player.getMoney() + players.size() * value);
                 for (Player p : players)
                     p.setMoney(p.getMoney() - value);
-                break;
-            case 3:
-                player.moveTo(position);
-                break;
-            case 4:
-                player.setJailExit(player.getJailExit() + 1);
-                break;
+            }
+            case 3 -> player.moveTo(position);
+            case 4 -> player.setJailExit(player.getJailExit() + 1);
         }
         return this.action;
     }

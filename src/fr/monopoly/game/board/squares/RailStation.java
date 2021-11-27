@@ -17,16 +17,12 @@ public class RailStation extends Property {
             if (p instanceof RailStation && !p.isMortgage())
                 railStationsOwned.add((RailStation) p);
         }
-        switch (railStationsOwned.size()) {
-            case 1:
-                return this.getRent();
-            case 2:
-                return 2 * this.getRent();
-            case 3:
-                return 3 * this.getRent();
-            case 4:
-                return 4 * this.getRent();
-        }
-        return 0;
+        return switch (railStationsOwned.size()) {
+            case 1 -> this.getRent();
+            case 2 -> 2 * this.getRent();
+            case 3 -> 3 * this.getRent();
+            case 4 -> 4 * this.getRent();
+            default -> 0;
+        };
     }
 }

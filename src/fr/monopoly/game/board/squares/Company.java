@@ -17,12 +17,10 @@ public class Company extends Property {
             if (p instanceof Company && !p.isMortgage())
                 companiesOwned.add((Company) p);
         }
-        switch (companiesOwned.size()) {
-            case 1:
-                return this.getRent() * currentPlayer.getRoll();
-            case 2:
-                return  10 * currentPlayer.getRoll();
-        }
-        return 0;
+        return switch (companiesOwned.size()) {
+            case 1 -> this.getRent() * currentPlayer.getRoll();
+            case 2 -> 10 * currentPlayer.getRoll();
+            default -> 0;
+        };
     }
 }

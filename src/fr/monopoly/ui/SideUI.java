@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class SideUI extends JPanel {
 
     private ArrayList<String> holder;
-    private JList list;
 
     public SideUI(){
         holder = new ArrayList<String>();
@@ -38,7 +37,7 @@ public class SideUI extends JPanel {
         moneyLabel.setFont(new Font("Serif", Font.BOLD, 18));
         this.add(BorderLayout.NORTH, nameLabel);
         this.add(BorderLayout.NORTH, moneyLabel);
-        list = new JList(holder.toArray());
+        JList list = new JList(holder.toArray());
         list.setLayoutOrientation(JList.VERTICAL);
         list.setName("Propriétés");
         list.setSelectedIndex (1);

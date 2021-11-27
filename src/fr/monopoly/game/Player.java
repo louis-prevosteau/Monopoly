@@ -30,10 +30,6 @@ public class Player {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getMoney() {
         return money;
     }
@@ -60,10 +56,6 @@ public class Player {
 
     public int getRoll() {
         return roll;
-    }
-
-    public void setRoll(int roll) {
-        this.roll = roll;
     }
 
     public int getDoubleCount() {
@@ -144,7 +136,7 @@ public class Player {
     }
 
     public void roll() {
-        if (onDice2 == false) {
+        if (!onDice2) {
             this.setDice1((int)(6*Math.random() + 1));
             this.onDice2 = true;
             this.roll();
@@ -159,10 +151,12 @@ public class Player {
         for (Property g : give) {
             this.getPropertiesOwned().remove(g);
             trader.getPropertiesOwned().add(g);
+            g.setOwner(trader);
         }
         for (Property t : take) {
             trader.getPropertiesOwned().remove(t);
             this.getPropertiesOwned().add(t);
+            t.setOwner(this);
         }
         this.setMoney(this.getMoney() - cashGive);
         trader.setMoney(trader.getMoney() + cashGive);
@@ -240,7 +234,7 @@ public class Player {
 
     public int payRent(Player owner, Property landed) {
         int newRent = 0;
-        if (landed.isMortgage() == false)
+        if (!landed.isMortgage())
             newRent = landed.updateRent(owner, this);
         else
             JOptionPane.showMessageDialog(null, landed.getName() + " est hypothéquée.", "Propriété hypothéquée", JOptionPane.ERROR_MESSAGE);

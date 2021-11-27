@@ -1,18 +1,14 @@
 package fr.monopoly.ui;
 
 import fr.monopoly.game.Player;
-import fr.monopoly.game.board.squares.Property;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class TopUI extends JPanel {
 
     private ArrayList<String> holder;
-    private JList list;
-    private Player player;
 
     public TopUI(){
         holder = new ArrayList<String>();
@@ -41,7 +37,7 @@ public class TopUI extends JPanel {
         moneyLabel.setFont(new Font("Serif", Font.BOLD, 18));
         this.add(BorderLayout.NORTH, nameLabel);
         this.add(BorderLayout.NORTH, moneyLabel);
-        list = new JList(holder.toArray());
+        JList list = new JList(holder.toArray());
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setName("Propriétés");
         list.setSelectedIndex (1);
