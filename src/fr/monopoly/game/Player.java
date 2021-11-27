@@ -155,11 +155,15 @@ public class Player {
         }
     }
 
-    public void trade(Player trader, Property give, Property take, int cashGive, int cashTake) {
-        this.getPropertiesOwned().remove(give);
-        trader.getPropertiesOwned().add(give);
-        trader.getPropertiesOwned().remove(take);
-        this.getPropertiesOwned().add(take);
+    public void trade(Player trader, ArrayList<Property> give, ArrayList<Property> take, int cashGive, int cashTake) {
+        for (Property g : give) {
+            this.getPropertiesOwned().remove(g);
+            trader.getPropertiesOwned().add(g);
+        }
+        for (Property t : take) {
+            trader.getPropertiesOwned().remove(t);
+            this.getPropertiesOwned().add(t);
+        }
         this.setMoney(this.getMoney() - cashGive);
         trader.setMoney(trader.getMoney() + cashGive);
         trader.setMoney(trader.getMoney() - cashTake);

@@ -24,7 +24,6 @@ public class Monopoly {
     private Player currentPlayer;
     private Board board;
     private CardStack cardStack;
-    private int currentPlayerIndex;
     private int numberOfPlayers;
     private int houses = 32;
     private int hotels = 12;
@@ -61,13 +60,13 @@ public class Monopoly {
         cardStack = new CardStack();
         for(int i = 0 ; i<numberOfPlayers ; i++)
             players.add(i, new Player("Joueur "+(i+1), board.getFirst()));
-        currentPlayerIndex = 0;
-        currentPlayer = new Player();
+        int currentPlayerIndex = 0;
+        new Player();
         currentPlayer = players.get(currentPlayerIndex);
         center = new BoardUI(players);
         createUI(players);
         JOptionPane.showMessageDialog(null, "Bienvenue!", "Monopoly", JOptionPane.INFORMATION_MESSAGE);
-        while(win == false){
+        while(!win){
             isTurnPhase1();
             try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
             isTurnPhase2();
@@ -148,6 +147,12 @@ public class Monopoly {
         center.repaint();
     }
 
+    public String propsToString(ArrayList<Property> props) {
+        for (Property p : props)
+            return "\n- " + p.getName();
+        return null;
+    }
+
     public void isDying() {
         String[] survive = {
                 "Confirmer",
@@ -156,9 +161,9 @@ public class Monopoly {
                 "Hypothéquer",
                 "Echanger"
         };
-        String[] props = new String[currentPlayer.getPropertiesOwned().size()];
-        for (int i = 0 ; i < props.length ; i++)
-            props[i] = currentPlayer.getPropertiesOwned().get(i).getName();
+        ArrayList<String> props = new ArrayList<String>(currentPlayer.getPropertiesOwned().size());
+        for (Property p : currentPlayer.getPropertiesOwned())
+            props.add(p.getName());
         ArrayList<Ground> groundsOwned = new ArrayList<Ground>();
         for (Property p : currentPlayer.getPropertiesOwned()) {
             if (p instanceof Ground)
@@ -175,7 +180,7 @@ public class Monopoly {
             if (currentPlayer.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
             } else {
-                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous vendre ?", "Vendre", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
+                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous vendre ?", "Vendre", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
                 if (choice instanceof Ground && currentPlayer.hasMonopoly(choice.getColor()) && !currentPlayer.isNoHousesOnGrounds(choice.getColor())) {
                     JOptionPane.showMessageDialog(null, "Vous ne pouvez pas vendre " + choice.getName() + " car des maisons sont construites sur cette propriété ou sur les propriétés voisines.", "Vente impossible", JOptionPane.ERROR_MESSAGE);
                     isDying();
@@ -193,8 +198,8 @@ public class Monopoly {
             refreshAll();
             isDying();
         } else if (optionSelected == 3) {
-            Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous hypothéquer ?", "Hypothéquer", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
-            if (choice.isMortgage() == false) {
+            Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous hypothéquer ?", "Hypothéquer", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
+            if (!choice.isMortgage()) {
                 JOptionPane.showMessageDialog(null, choice.getName() + " est déjà hypothéquer.", "Ooops", JOptionPane.ERROR_MESSAGE);
                 isDying();
             } else if (choice instanceof Ground && currentPlayer.isNoHousesOnGrounds(choice.getColor())) {
@@ -218,30 +223,51 @@ public class Monopoly {
                     JOptionPane.showMessageDialog(null, trader.getName() + " n'a pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
                     isDying();
                 } else {
-                    String[] propsOfTrader = new String[trader.getPropertiesOwned().size()];
-                    for (int i = 0 ; i < propsOfTrader.length ; i++)
-                        propsOfTrader[i] = trader.getPropertiesOwned().get(i).getName();
-                    Property give = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
-                    Property take = trader.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, trader.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, propsOfTrader, null));
+                    ArrayList<String> propsOfTrader = new ArrayList<String>(trader.getPropertiesOwned().size());
+                    for (Property p : trader.getPropertiesOwned())
+                        propsOfTrader.add(p.getName());
+                    ArrayList<Property> giveProps = new ArrayList<Property>();
+                    ArrayList<Property> takeProps = new ArrayList<Property>();
+                    int giveNumber = Integer.parseInt(JOptionPane.showInputDialog(currentPlayer.getName() + ", Combien de propriétés voulez-vous échanger ?"));
+                    for (int i = 0 ; i < giveNumber ; i++) {
+                        Property give = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
+                        if (give instanceof Ground && !currentPlayer.isNoHousesOnGrounds(give.getColor())) {
+                            JOptionPane.showMessageDialog(null, """
+                                    Un échange n'est valable si et seulement si :
+                                    - Les propriétés échangés ou leurs voisines ne possèdent pas de maisons (terrains)
+                                    - Les joueurs participant à l'échange possèdent la somme d'argent suffisante pour échanger""", "Echange non-conforme", JOptionPane.ERROR_MESSAGE);
+                            isDying();
+                        } else {
+                            giveProps.add(give);
+                            props.remove(give.getName());
+                        }
+                    }
+                    int takeNumber = Integer.parseInt(JOptionPane.showInputDialog(trader.getName() + ", Combien de propriétés voulez-vous échanger ?"));
+                    for (int i = 0 ; i < takeNumber ; i++) {
+                        Property take = trader.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, trader.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, propsOfTrader.toArray(), null));
+                        if (take instanceof Ground && !currentPlayer.isNoHousesOnGrounds(take.getColor())) {
+                            JOptionPane.showMessageDialog(null, """
+                                    Un échange n'est valable si et seulement si :
+                                    - Les propriétés échangés ou leurs voisines ne possèdent pas de maisons (terrains)
+                                    - Les joueurs participant à l'échange possèdent la somme d'argent suffisante pour échanger""", "Echange non-conforme", JOptionPane.ERROR_MESSAGE);
+                            isDying();
+                        } else {
+                            takeProps.add(take);
+                            propsOfTrader.remove(take.getName());
+                        }
+                    }
                     int cashGive = Integer.parseInt(JOptionPane.showInputDialog(null, currentPlayer.getName() + ", combien voulez-vous donner ?", "Echanger", JOptionPane.QUESTION_MESSAGE));
                     int cashTake = Integer.parseInt(JOptionPane.showInputDialog(null, trader.getName() + ", combien voulez-vous donner ?", "Echanger", JOptionPane.QUESTION_MESSAGE));
-                    if ((give instanceof Ground && !currentPlayer.isNoHousesOnGrounds(give.getColor()) || (take instanceof Ground && !trader.isNoHousesOnGrounds(take.getColor())) || !currentPlayer.canPay(cashGive) || !trader.canPay(cashTake))) {
-                        JOptionPane.showMessageDialog(null, "Un échange n'est valable si et seulement si :\n" +
-                                "- Les propriétés échangés ou leurs voisines ne possèdent pas de maisons (terrains)\n" +
-                                "- Les joueurs participant à l'échange possèdent la somme d'argent suffisante pour échanger", "Echange non-conforme", JOptionPane.ERROR_MESSAGE);
-                        isDying();
-                    } else {
-                        String[] yesNoOptions = {"Oui", "Non"};
-                        int yesNo = JOptionPane.showOptionDialog(null, "Je soussigné : " + currentPlayer.getName() +
-                                ", accepte de donner la propriété " + give.getName() + " et " + cashGive + " € à " + trader.getName() +
-                                "contre la propriété " + take.getName() + " et " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
-                        if (yesNo == 1)
-                            JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
-                        else {
-                            JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
-                            currentPlayer.trade(trader, give, take, cashGive, cashTake);
-                            refreshAll();
-                        }
+                    String[] yesNoOptions = {"Oui", "Non"};
+                    int yesNo = JOptionPane.showOptionDialog(null, "Je soussigné : " + currentPlayer.getName() +
+                            ", accepte de donner les propriétés :\n " + propsToString(giveProps) + "\net " + cashGive + " € à " + trader.getName() +
+                            "contre les propriétés :\n" + takeProps + "\net " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
+                    if (yesNo == 1)
+                        JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
+                    else {
+                        JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
+                        currentPlayer.trade(trader, giveProps, takeProps, cashGive, cashTake);
+                        refreshAll();
                     }
                 }
             }
@@ -312,9 +338,9 @@ public class Monopoly {
                 "Déshypothéquer",
                 "Quitter"
                 };
-        String[] props = new String[currentPlayer.getPropertiesOwned().size()];
-        for (int i = 0 ; i < props.length ; i++)
-            props[i] = currentPlayer.getPropertiesOwned().get(i).getName();
+        ArrayList<String> props = new ArrayList<>(currentPlayer.getPropertiesOwned().size());
+        for (Property p : currentPlayer.getPropertiesOwned())
+            props.add(p.getName());
         ArrayList<Ground> groundsOwned = new ArrayList<Ground>();
         for (Property p : currentPlayer.getPropertiesOwned()) {
             if (p instanceof Ground)
@@ -336,7 +362,6 @@ public class Monopoly {
             Player player = players.get(JOptionPane.showOptionDialog(null, "Selectionnez un joueur :", "Voir les propriétés", 0, JOptionPane.QUESTION_MESSAGE, null, names, null));
             if (player.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, player.getName() + " n'a pas de propriétés.", "Pas de propriétés", JOptionPane.INFORMATION_MESSAGE);
-                isTurnPhase1();
             } else {
                 String[] playerProps = new String[player.getPropertiesOwned().size()];
                 for (int i = 0 ; i < playerProps.length ; i++)
@@ -349,8 +374,8 @@ public class Monopoly {
                         "\nNombre de maisons: " + viewed.getNbHouse() +
                         "\nHypothéquée: " + viewed.isMortgage();
                 JOptionPane.showOptionDialog(null, details, viewed.getName(), 0, JOptionPane.QUESTION_MESSAGE, null, okOption, null);
-                isTurnPhase1();
             }
+            isTurnPhase1();
         } else if (phase1 == 2) {
             if (currentPlayer.getPropertiesOwned().isEmpty()) {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
@@ -376,32 +401,53 @@ public class Monopoly {
                     JOptionPane.showMessageDialog(null, trader.getName() + " n'a pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
                     isDying();
                 } else {
-                    String[] propsOfTrader = new String[trader.getPropertiesOwned().size()];
-                    for (int i = 0 ; i < propsOfTrader.length ; i++)
-                        propsOfTrader[i] = trader.getPropertiesOwned().get(i).getName();
-                    Property give = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
-                    Property take = trader.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, trader.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, propsOfTrader, null));
+                    ArrayList<String> propsOfTrader = new ArrayList<String>(trader.getPropertiesOwned().size());
+                    for (Property p : trader.getPropertiesOwned())
+                        propsOfTrader.add(p.getName());
+                    ArrayList<Property> giveProps = new ArrayList<Property>();
+                    ArrayList<Property> takeProps = new ArrayList<Property>();
+                    int giveNumber = Integer.parseInt(JOptionPane.showInputDialog(currentPlayer.getName() + ", Combien de propriétés voulez-vous échanger ?"));
+                    for (int i = 0 ; i < giveNumber ; i++) {
+                        Property give = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
+                        if (give instanceof Ground && !currentPlayer.isNoHousesOnGrounds(give.getColor())) {
+                            JOptionPane.showMessageDialog(null, """
+                                    Un échange n'est valable si et seulement si :
+                                    - Les propriétés échangés ou leurs voisines ne possèdent pas de maisons (terrains)
+                                    - Les joueurs participant à l'échange possèdent la somme d'argent suffisante pour échanger""", "Echange non-conforme", JOptionPane.ERROR_MESSAGE);
+                            isTurnPhase1();
+                        } else {
+                            giveProps.add(give);
+                            props.remove(give.getName());
+                        }
+                    }
+                    int takeNumber = Integer.parseInt(JOptionPane.showInputDialog(trader.getName() + ", Combien de propriétés voulez-vous échanger ?"));
+                    for (int i = 0 ; i < takeNumber ; i++) {
+                        Property take = trader.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, trader.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, propsOfTrader.toArray(), null));
+                        if (take instanceof Ground && !currentPlayer.isNoHousesOnGrounds(take.getColor())) {
+                            JOptionPane.showMessageDialog(null, """
+                                    Un échange n'est valable si et seulement si :
+                                    - Les propriétés échangés ou leurs voisines ne possèdent pas de maisons (terrains)
+                                    - Les joueurs participant à l'échange possèdent la somme d'argent suffisante pour échanger""", "Echange non-conforme", JOptionPane.ERROR_MESSAGE);
+                            isTurnPhase1();
+                        } else {
+                            takeProps.add(take);
+                            propsOfTrader.remove(take.getName());
+                        }
+                    }
                     int cashGive = Integer.parseInt(JOptionPane.showInputDialog(null, currentPlayer.getName() + ", combien voulez-vous donner ?", "Echanger", JOptionPane.QUESTION_MESSAGE));
                     int cashTake = Integer.parseInt(JOptionPane.showInputDialog(null, trader.getName() + ", combien voulez-vous donner ?", "Echanger", JOptionPane.QUESTION_MESSAGE));
-                    if ((give instanceof Ground && !currentPlayer.isNoHousesOnGrounds(give.getColor()) || (take instanceof Ground && !trader.isNoHousesOnGrounds(take.getColor())) || !currentPlayer.canPay(cashGive) || !trader.canPay(cashTake))) {
-                        JOptionPane.showMessageDialog(null, "Un échange n'est valable si et seulement si :\n" +
-                                "- Les propriétés échangés ou leurs voisines ne possèdent pas de maisons (terrains)\n" +
-                                "- Les joueurs participant à l'échange possèdent la somme d'argent suffisante pour échanger", "Echange non-conforme", JOptionPane.ERROR_MESSAGE);
-                        isTurnPhase1();
-                    } else {
-                        String[] yesNoOptions = {"Oui", "Non"};
-                        int yesNo = JOptionPane.showOptionDialog(null, "Je soussigné : " + currentPlayer.getName() +
-                                ", accepte de donner la propriété " + give.getName() + " et " + cashGive + " € à " + trader.getName() +
-                                "contre la propriété " + take.getName() + " et " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
-                        if (yesNo == 1)
-                            JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
-                        else {
-                            JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
-                            currentPlayer.trade(trader, give, take, cashGive, cashTake);
-                            refreshAll();
-                        }
-                        isTurnPhase1();
+                    String[] yesNoOptions = {"Oui", "Non"};
+                    int yesNo = JOptionPane.showOptionDialog(null, "Je soussigné : " + currentPlayer.getName() +
+                            ", accepte de donner la propriétés :\n" + propsToString(giveProps) + "\net " + cashGive + " € à " + trader.getName() +
+                            "contre la propriétés :\n" + propsToString(takeProps) + "\net " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
+                    if (yesNo == 1)
+                        JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
+                    else {
+                        JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
+                        currentPlayer.trade(trader, giveProps, takeProps, cashGive, cashTake);
+                        refreshAll();
                     }
+                    isTurnPhase1();
                 }
             }
         } else if (phase1 == 4) {
@@ -409,7 +455,7 @@ public class Monopoly {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
                 isTurnPhase1();
             } else {
-                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous vendre ?", "Vendre", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
+                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous vendre ?", "Vendre", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
                 if (choice instanceof Ground && currentPlayer.hasMonopoly(choice.getColor()) && !currentPlayer.isNoHousesOnGrounds(choice.getColor())) {
                     JOptionPane.showMessageDialog(null, "Vous ne pouvez pas vendre " + choice.getName() + " car des maisons sont construites sur cette propriété ou sur les propriétés voisines.", "Vente impossible", JOptionPane.ERROR_MESSAGE);
                     isTurnPhase1();
@@ -435,7 +481,7 @@ public class Monopoly {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
                 isTurnPhase1();
             } else {
-                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous hypothéquer ?", "Hypothéquer", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
+                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous hypothéquer ?", "Hypothéquer", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
                 if (choice instanceof Ground && currentPlayer.hasMonopoly(choice.getColor()) && !currentPlayer.isNoHousesOnGrounds(choice.getColor())) {
                     JOptionPane.showMessageDialog(null, "Vous ne pouvez pas hypothéquer " + choice.getName() + " car des maisons sont construites sur cette propriété ou sur les propriétés voisines.", "hypothéque impossible", JOptionPane.ERROR_MESSAGE);
                     isTurnPhase1();
@@ -454,9 +500,9 @@ public class Monopoly {
                 JOptionPane.showMessageDialog(null, currentPlayer.getName() + ", vous n'avez pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
                 isTurnPhase1();
             } else {
-                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous hypothéquer ?", "Hypothéquer", 0, JOptionPane.QUESTION_MESSAGE, null, props, null));
+                Property choice = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous hypothéquer ?", "Hypothéquer", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
                 if (!currentPlayer.canPay(choice.getPrice() / 2)) {
-                    JOptionPane.showMessageDialog(null, "Vous n\' avez pas assez d'argent pour déshypothéquer.", "déshypothéque impossible", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vous n' avez pas assez d'argent pour déshypothéquer.", "déshypothéque impossible", JOptionPane.ERROR_MESSAGE);
                     isTurnPhase1();
                 } else if (!choice.isMortgage()) {
                     JOptionPane.showMessageDialog(null, choice.getName() + " est déjà déshypothéquée", "Ooops", JOptionPane.ERROR_MESSAGE);
