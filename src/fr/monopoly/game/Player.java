@@ -204,7 +204,7 @@ public class Player {
             prop.setNbHouse(prop.getNbHouse() + 1);
             JOptionPane.showMessageDialog(null, "Vous avez construit une maison sur " + prop.getName(), "Construction", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "Vous ne pouvez pls construire de maisons sur " + prop.getName(), "Construction impossible", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Vous ne pouvez plus construire de maisons sur " + prop.getName(), "Construction impossible", JOptionPane.ERROR_MESSAGE);
         }
     }
 
