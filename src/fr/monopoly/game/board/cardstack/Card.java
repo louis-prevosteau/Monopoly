@@ -19,6 +19,10 @@ public class Card {
         this.type = type;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public int execute(Player player, ArrayList<Player> players) {
         String title = type.equals(Type.CHANCE) ? "Chance" : "Caisse de Communauté";
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
@@ -29,7 +33,11 @@ public class Card {
                 for (Player p : players)
                     p.setMoney(p.getMoney() - value);
             }
-            case 3 -> player.moveTo(position);
+            case 3 -> {
+                if (position == 11)
+                    player.setJailTime(3);
+                player.moveTo(position);
+            }
             case 4 -> player.setJailExit(player.getJailExit() + 1);
         }
         return this.action;
