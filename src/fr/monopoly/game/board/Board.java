@@ -41,7 +41,7 @@ public class Board {
         addSpace(new Ground(12, "Boulevard de la  Villette", 140, 10, 100, Color.PURPLE));
         addSpace(new Company(13, "Compagnie de Distribution d'Electricité", 150, 4));
         addSpace(new Ground(14, "Avenue de Neuilly", 140, 10, 100, Color.PURPLE));
-        addSpace(new Ground(15, "Rue de Pradis", 160, 12, 100, Color.PURPLE));
+        addSpace(new Ground(15, "Rue de Paradis", 160, 12, 100, Color.PURPLE));
         addSpace(new RailStation(16, "Gare de Lyon", 200, 25));
         addSpace(new Ground(17, "Avenue Mozart", 180, 14, 100, Color.ORANGE));
         addSpace(new Community(18));

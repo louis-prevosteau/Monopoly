@@ -76,4 +76,9 @@ public abstract class Property extends Space {
     }
 
     public abstract int updateRent(Player owner, Player currentPlayer);
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

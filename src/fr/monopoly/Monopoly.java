@@ -13,6 +13,7 @@ import fr.monopoly.ui.TopUI;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Monopoly {
 
@@ -147,12 +148,6 @@ public class Monopoly {
         center.repaint();
     }
 
-    public String propsToString(ArrayList<Property> props) {
-        for (Property p : props)
-            return "\n- " + p.getName();
-        return null;
-    }
-
     public void isDying() {
         String[] survive = {
                 "Confirmer",
@@ -259,12 +254,13 @@ public class Monopoly {
                     int cashTake = Integer.parseInt(JOptionPane.showInputDialog(null, trader.getName() + ", combien voulez-vous donner ?", "Echanger", JOptionPane.QUESTION_MESSAGE));
                     String[] yesNoOptions = {"Oui", "Non"};
                     int yesNo = JOptionPane.showOptionDialog(null, "Je soussigné : " + currentPlayer.getName() +
-                            ", accepte de donner les propriétés :\n " + propsToString(giveProps) + "\net " + cashGive + " € à " + trader.getName() +
-                            " contre les propriétés :\n" + takeProps + "\net " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
+                            ", accepte de donner les propriétés :\n " + Arrays.toString(giveProps.toArray()) + "\net " + cashGive + " € à " + trader.getName() +
+                            " contre les propriétés :\n" + Arrays.toString(takeProps.toArray()) + "\net " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
                     if (yesNo == 1)
                         JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
                     else {
                         JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
+                        // FIXME: 30/11/2021 : fix giveProps and tradeProps
                         currentPlayer.trade(trader, giveProps, takeProps, cashGive, cashTake);
                         refreshAll();
                     }
@@ -436,12 +432,13 @@ public class Monopoly {
                     int cashTake = Integer.parseInt(JOptionPane.showInputDialog(null, trader.getName() + ", combien voulez-vous donner ?", "Echanger", JOptionPane.QUESTION_MESSAGE));
                     String[] yesNoOptions = {"Oui", "Non"};
                     int yesNo = JOptionPane.showOptionDialog(null, "Je soussigné : " + currentPlayer.getName() +
-                            ", accepte de donner la propriétés :\n" + propsToString(giveProps) + "\net " + cashGive + " € à " + trader.getName() +
-                            "contre la propriétés :\n" + propsToString(takeProps) + "\net " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
+                            ", accepte de donner la propriétés :\n" + Arrays.toString(giveProps.toArray()) + "\net " + cashGive + " € à " + trader.getName() +
+                            "contre la propriétés :\n" + Arrays.toString(takeProps.toArray()) + "\net " + cashTake + " € et inversement.", "Contrat", 0, JOptionPane.QUESTION_MESSAGE, null, yesNoOptions, null);
                     if (yesNo == 1)
                         JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
                     else {
                         JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
+                        // FIXME: 30/11/2021 : fix giveProps and tradeProps
                         currentPlayer.trade(trader, giveProps, takeProps, cashGive, cashTake);
                         refreshAll();
                     }
