@@ -23,7 +23,7 @@ public class Player {
         this.doubleCount = 0;
         this.jailExit = 0;
         this.currentSpace = currentSpace;
-        propertiesOwned = new ArrayList<Property>();
+        propertiesOwned = new ArrayList<>();
     }
 
     public String getName() {
@@ -99,7 +99,7 @@ public class Player {
     }
 
     public boolean isNoHousesOnGrounds(Color groundColor) {
-        ArrayList<Ground> groundsOfColor = new ArrayList<Ground>();
+        ArrayList<Ground> groundsOfColor = new ArrayList<>();
         for (Property p : propertiesOwned) {
             if (p instanceof Ground && p.getColor().equals(groundColor))
                 groundsOfColor.add((Ground) p);
@@ -165,7 +165,7 @@ public class Player {
     }
 
     public boolean hasMonopoly(Color propColor) {
-        ArrayList<Ground> groundsOfColor = new ArrayList<Ground>();
+        ArrayList<Ground> groundsOfColor = new ArrayList<>();
         for (Property p : propertiesOwned) {
             if (p instanceof Ground && p.getColor().equals(propColor) && !p.isMortgage())
                 groundsOfColor.add((Ground) p);
@@ -188,11 +188,11 @@ public class Player {
 
     public void buyHouse(Ground prop, Monopoly game) {
         if (prop.getNbHouse() < 4 && game.getHouses() == 0) {
-            JOptionPane.showMessageDialog(null, "Il n\'y a plus de maisons dans le jeu", "Plus de maisons disponibles", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Il n'y a plus de maisons dans le jeu", "Plus de maisons disponibles", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (prop.getNbHouse() == 4 && game.getHotels() == 0) {
-            JOptionPane.showMessageDialog(null, "Il n\'y a plus d\'hôtels dans le jeu", "Plus d\'hôtels disponibles", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Il n'y a plus d'hôtels dans le jeu", "Plus d'hôtels disponibles", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (prop.getNbHouse() < 5) {

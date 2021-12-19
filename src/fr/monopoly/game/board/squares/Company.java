@@ -12,7 +12,7 @@ public class Company extends Property {
 
     @Override
     public int updateRent(Player owner, Player currentPlayer) {
-        ArrayList<Company> companiesOwned = new ArrayList<Company>();
+        ArrayList<Company> companiesOwned = new ArrayList<>();
         for (Property p : owner.getPropertiesOwned()) {
             if (p instanceof Company && !p.isMortgage())
                 companiesOwned.add((Company) p);

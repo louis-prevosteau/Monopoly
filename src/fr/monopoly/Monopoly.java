@@ -56,7 +56,7 @@ public class Monopoly {
             numberOfPlayers = Integer.parseInt(snPlayers);
         else
             start();
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
         board = new Board();
         cardStack = new CardStack();
         for(int i = 0 ; i<numberOfPlayers ; i++)
@@ -156,10 +156,10 @@ public class Monopoly {
                 "Hypothéquer",
                 "Echanger"
         };
-        ArrayList<String> props = new ArrayList<String>(currentPlayer.getPropertiesOwned().size());
+        ArrayList<String> props = new ArrayList<>(currentPlayer.getPropertiesOwned().size());
         for (Property p : currentPlayer.getPropertiesOwned())
             props.add(p.getName());
-        ArrayList<Ground> groundsOwned = new ArrayList<Ground>();
+        ArrayList<Ground> groundsOwned = new ArrayList<>();
         for (Property p : currentPlayer.getPropertiesOwned()) {
             if (p instanceof Ground)
                 groundsOwned.add((Ground) p);
@@ -217,11 +217,11 @@ public class Monopoly {
                     JOptionPane.showMessageDialog(null, trader.getName() + " n'a pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
                     isDying();
                 } else {
-                    ArrayList<String> propsOfTrader = new ArrayList<String>(trader.getPropertiesOwned().size());
+                    ArrayList<String> propsOfTrader = new ArrayList<>(trader.getPropertiesOwned().size());
                     for (Property p : trader.getPropertiesOwned())
                         propsOfTrader.add(p.getName());
-                    ArrayList<Property> giveProps = new ArrayList<Property>();
-                    ArrayList<Property> takeProps = new ArrayList<Property>();
+                    ArrayList<Property> giveProps = new ArrayList<>();
+                    ArrayList<Property> takeProps = new ArrayList<>();
                     int giveNumber = Integer.parseInt(JOptionPane.showInputDialog(currentPlayer.getName() + ", Combien de propriétés voulez-vous échanger ?"));
                     for (int i = 0 ; i < giveNumber ; i++) {
                         Property give = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
@@ -260,7 +260,6 @@ public class Monopoly {
                         JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
                     else {
                         JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
-                        // FIXME: 30/11/2021 : fix giveProps and tradeProps
                         currentPlayer.trade(trader, giveProps, takeProps, cashGive, cashTake);
                         refreshAll();
                     }
@@ -336,7 +335,7 @@ public class Monopoly {
         ArrayList<String> props = new ArrayList<>(currentPlayer.getPropertiesOwned().size());
         for (Property p : currentPlayer.getPropertiesOwned())
             props.add(p.getName());
-        ArrayList<Ground> groundsOwned = new ArrayList<Ground>();
+        ArrayList<Ground> groundsOwned = new ArrayList<>();
         for (Property p : currentPlayer.getPropertiesOwned()) {
             if (p instanceof Ground)
                 groundsOwned.add((Ground) p);
@@ -395,11 +394,11 @@ public class Monopoly {
                     JOptionPane.showMessageDialog(null, trader.getName() + " n'a pas de propriétés.", "Pas de propriétés", JOptionPane.ERROR_MESSAGE);
                     isDying();
                 } else {
-                    ArrayList<String> propsOfTrader = new ArrayList<String>(trader.getPropertiesOwned().size());
+                    ArrayList<String> propsOfTrader = new ArrayList<>(trader.getPropertiesOwned().size());
                     for (Property p : trader.getPropertiesOwned())
                         propsOfTrader.add(p.getName());
-                    ArrayList<Property> giveProps = new ArrayList<Property>();
-                    ArrayList<Property> takeProps = new ArrayList<Property>();
+                    ArrayList<Property> giveProps = new ArrayList<>();
+                    ArrayList<Property> takeProps = new ArrayList<>();
                     int giveNumber = Integer.parseInt(JOptionPane.showInputDialog(currentPlayer.getName() + ", Combien de propriétés voulez-vous échanger ?"));
                     for (int i = 0 ; i < giveNumber ; i++) {
                         Property give = currentPlayer.getPropertiesOwned().get(JOptionPane.showOptionDialog(null, currentPlayer.getName() + ", quelle propriété voulez-vous échanger ?", "Echanger", 0, JOptionPane.QUESTION_MESSAGE, null, props.toArray(), null));
@@ -438,7 +437,6 @@ public class Monopoly {
                         JOptionPane.showMessageDialog(null, "Contrat refusé", "Contrat refusé", JOptionPane.ERROR_MESSAGE);
                     else {
                         JOptionPane.showMessageDialog(null, "Contrat accepté", "Contrat accepté", JOptionPane.INFORMATION_MESSAGE);
-                        // FIXME: 30/11/2021 : fix giveProps and tradeProps
                         currentPlayer.trade(trader, giveProps, takeProps, cashGive, cashTake);
                         refreshAll();
                     }

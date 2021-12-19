@@ -11,7 +11,7 @@ public class TopUI extends JPanel {
     private ArrayList<String> holder;
 
     public TopUI(){
-        holder = new ArrayList<String>();
+        holder = new ArrayList<>();
     }
 
     public void refreshList(Player player){
@@ -20,7 +20,7 @@ public class TopUI extends JPanel {
             String detail = "Pas de propriétés";
             holder.add(0, detail);
         }else{
-            holder = new ArrayList<String>();
+            holder = new ArrayList<>();
             for(int i = 0; i<player.getPropertiesOwned().size(); i++){
                 String prop = player.getPropertiesOwned().get(i).getName() + " - " + player.getPropertiesOwned().get(i).getColor();
                 holder.add(i, prop);

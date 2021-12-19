@@ -12,7 +12,7 @@ public class RailStation extends Property {
 
     @Override
     public int updateRent(Player owner, Player currentPlayer) {
-        ArrayList<RailStation> railStationsOwned = new ArrayList<RailStation>();
+        ArrayList<RailStation> railStationsOwned = new ArrayList<>();
         for (Property p : owner.getPropertiesOwned()) {
             if (p instanceof RailStation && !p.isMortgage())
                 railStationsOwned.add((RailStation) p);

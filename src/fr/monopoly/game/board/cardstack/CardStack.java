@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class CardStack {
 
-    private LinkedList<Card> chance = new LinkedList<Card>();
-    private LinkedList<Card> community = new LinkedList<Card>();
+    private LinkedList<Card> chance = new LinkedList<>();
+    private LinkedList<Card> community = new LinkedList<>();
 
     public CardStack() {
         try {

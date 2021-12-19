@@ -40,7 +40,5 @@ public class Space {
         this.next = next;
     }
 
-    public void doAction(Player player, ArrayList<Player> players, Monopoly game, CardStack stack) {
-        return;
-    }
+    public void doAction(Player player, ArrayList<Player> players, Monopoly game, CardStack stack) {}
 }

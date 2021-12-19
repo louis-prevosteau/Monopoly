@@ -12,7 +12,7 @@ public class SideUI extends JPanel {
     private ArrayList<String> holder;
 
     public SideUI(){
-        holder = new ArrayList<String>();
+        holder = new ArrayList<>();
     }
 
     public void refreshList(Player player){
@@ -21,7 +21,7 @@ public class SideUI extends JPanel {
             String detail = "Pas de propriétés";
             holder.add(0, detail);
         }else{
-            holder = new ArrayList<String>();
+            holder = new ArrayList<>();
             for(Property p : player.getPropertiesOwned()){
                 String prop = p.getName() + " - " + p.getColor();
                 holder.add(prop);}
