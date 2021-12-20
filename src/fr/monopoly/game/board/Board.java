@@ -27,11 +27,12 @@ public class Board {
     }
 
     public void generate() {
+        FreeParking freeParking = new FreeParking(21);
         addSpace(new Go(1));
         addSpace(new Ground(2, "Boulevard de Belleville", 60, 2, 50, Color.PINK));
         addSpace(new Community(3));
         addSpace(new Ground(4, "Rue Lecourbe", 60, 4, 50, Color.PINK));
-        addSpace(new Tax(5, "Impôt sur le revenu", 200));
+        addSpace(new Tax(5, "Impôt sur le revenu", 200, freeParking));
         addSpace(new RailStation(6, "Gare Montparnasse", 200, 25));
         addSpace(new Ground(7, "Rue de Vaugirard", 100, 6, 50, Color.SKYBLUE));
         addSpace(new Chance(8));
@@ -47,7 +48,7 @@ public class Board {
         addSpace(new Community(18));
         addSpace(new Ground(19, "Boulevard Saint-Michel", 180, 14, 100, Color.ORANGE));
         addSpace(new Ground(20, "Place Pigalle", 200, 16, 100, Color.ORANGE));
-        addSpace(new FreeParking(21));
+        addSpace(freeParking);
         addSpace(new Ground(22, "Avenue Matignon", 220, 18, 150, Color.RED));
         addSpace(new Chance(23));
         addSpace(new Ground(24, "Boulevard Malsherbes", 220, 18, 150, Color.RED));
@@ -65,7 +66,7 @@ public class Board {
         addSpace(new RailStation(36, "Gare Saint-Lazare", 200, 25));
         addSpace(new Chance(37));
         addSpace(new Ground(38, "Avenue des Champs-Elysées", 350, 35, 200, Color.BLUE));
-        addSpace(new Tax(39, "Taxe de Luxe", 100));
+        addSpace(new Tax(39, "Taxe de Luxe", 100, freeParking));
         addSpace(new Ground(40, "Rue de la Paix", 400, 50, 200, Color.BLUE));
     }
 }
